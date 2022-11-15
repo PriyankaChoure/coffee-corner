@@ -1,5 +1,6 @@
 import Head from 'next/head'
 import Image from 'next/image'
+import Banner from '../components/banner/banner'
 import styles from '../styles/Home.module.css'
 
 export default function Home() {
@@ -12,17 +13,11 @@ export default function Home() {
       </Head>
 
       <main className={styles.main}>
-        <h1 className={styles.title}>
-          Coffee Corner...
-        </h1>
-
-
-       
-      </main>
-
-      <footer className={styles.footer}>
-       
-      </footer>
+        <Banner buttonText={"View stores nearby.."} />
+        <div className={styles.heroImage} >
+          <Image src="/static/Hero-image.png" width={700} height={400} priority= {true} />
+        </div>
+      </main>  
     </div>
   )
 }
