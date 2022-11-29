@@ -1,9 +1,25 @@
 import Head from 'next/head'
 import Image from 'next/image'
 import Banner from '../components/banner/banner'
+import Card from '../components/card/card'
+import FetchCoffeeStoreData from '../lib/coffee-store'
 import styles from '../styles/Home.module.css'
+// import coffeeStoresData from '../data/coffee-store.json';
 
-export default function Home() {
+export async function getStaticProps(context) {
+   const storeData = await FetchCoffeeStoreData();
+    
+  console.log("index - ", storeData);
+  return {
+    props: {
+      coffeeStores: storeData,
+    }, // will be passed to the page component as props
+  }
+}
+
+
+
+export default function Home(props) {
   return (
     <div className={styles.container}>
       <Head>
@@ -15,8 +31,30 @@ export default function Home() {
       <main className={styles.main}>
         <Banner buttonText={"View stores nearby.."} />
         <div className={styles.heroImage} >
-          <Image src="/static/Hero-image.png" width={700} height={400} priority= {true} />
+          <Image src="/static/Hero-image.png" width={700} height={350}/>
         </div>
+         
+      {
+        props.coffeeStores.length > 0 && ( 
+          <div>
+            <h2 className={styles.heading2} >Toronto Store</h2>
+          <div className={styles.cardLayout} >
+          {
+            props.coffeeStores.map((store)=>{
+            return(
+            <Card
+            key={store.id}
+            name={store.name}
+            imgUrl={store.imgUrl || "https://images.unsplash.com/photo-1504753793650-d4a2b783c15e?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2000&q=80"}
+            href={`/coffee-store/${store.id}`}
+            className={styles.card} 
+            />
+            )
+          })}
+        </div>
+          </div>
+        )
+      }
       </main>  
     </div>
   )
